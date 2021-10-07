@@ -27,4 +27,17 @@ kubectl certificate approve ${csr_name}
 echo 
 echo "Downloading certificate."
 kubectl get csr ${csr_name} -o jsonpath='{.status.certificate}' \
+  | bae64 --decode > $(basename ${csr} .csr).crt 
 
+echo
+echo "Cleaning up."
+kubectl delete csr ${csr_name}
+
+echo
+echo "Add the following to the 'users' list in your kubeconfig file:"
+echo "- name: ${name}"
+echo "- user:"
+echo "    client-certificate: ${PWD}/$(basename ${csr} .csr).crt"
+echo "    client-key: ${PWD}/$(basename ${csr} .csr)-key.pem"
+echo
+echo "Next you may want to add a role-binding for this user."
