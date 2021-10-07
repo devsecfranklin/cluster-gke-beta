@@ -5,6 +5,58 @@ data "google_container_engine_versions" "gke_version" {
   location = var.zone
 }
 
+resource "google_compute_network" "vpc" {
+  name                    = "${var.name}-vpc"
+  project                 = var.project_id
+  auto_create_subnetworks = "false"
+}
+
+resource "google_compute_route" "egress_internet" {
+  name             = "${var.name}-egress-internet"
+  project          = var.project_id
+  dest_range       = "0.0.0.0/0"
+  network          = google_compute_network.vpc.name
+  next_hop_gateway = "default-internet-gateway"
+}
+
+resource "google_compute_router" "router" {
+  name    = "${var.name}-router"
+  project = var.project_id
+  region  = var.region
+  network = google_compute_network.vpc.name
+}
+
+resource "google_compute_subnetwork" "gke-subnet" {
+  name                     = "${var.name}-gke-subnet"
+  project                  = var.project_id
+  region                   = var.region
+  network                  = google_compute_network.vpc.name
+  ip_cidr_range            = "10.99.0.0/24"
+  private_ip_google_access = true
+
+  /* A named secondary range is mandatory for a private cluster
+
+  While using a secondary IP range is recommended in order to to separate
+  cluster master and pod IPs, when using a network in the same project as
+  your GKE cluster you can specify a blank range name to draw alias IPs
+  from your subnetwork's primary IP range. If using a shared VPC network
+  (a network from another GCP project) using an explicit secondary range is
+  required.
+  */
+  secondary_ip_range = [
+    {
+      ip_cidr_range = "10.171.0.0/16"
+      range_name    = "dev-sec-gke-pods"
+    },
+    {
+      ip_cidr_range = "10.172.0.0/22"
+      range_name    = "dev-sec-gke-services"
+    },
+
+
+  ]
+}
+
 resource "google_container_cluster" "dev_cluster" {
   name               = var.name
   project            = var.project_id
@@ -55,15 +107,15 @@ resource "google_container_cluster" "dev_cluster" {
       cidr_block   = "34.136.90.64/32"
       display_name = "panorama-two"
     }
-  }
-  cidr_blocks {
-    cidr_block   = "34.134.31.136/32"
-    display_name = "panorama-three"
-  }
+    cidr_blocks {
+      cidr_block   = "34.134.31.136/32"
+      display_name = "panorama-three"
+    }
 
-  cidr_blocks {
-    cidr_block   = "75.70.99.60/32"
-    display_name = "franklin-denver"
+    cidr_blocks {
+      cidr_block   = "75.70.99.60/32"
+      display_name = "franklin-denver"
+    }
   }
 
   network_policy {
@@ -113,7 +165,7 @@ resource "google_container_node_pool" "dev_nodes" {
   name     = "dev-node-pool"
   project  = var.project_id
   location = var.region
-  cluster  = data.google_container_cluster.lab_cluster.name
+  cluster  = google_container_cluster.dev_cluster.name
 
   node_count = var.gke_num_nodes
 

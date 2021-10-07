@@ -6,7 +6,7 @@ provider "google" {
 }
 
 terraform {
-  required_version = ">= 1.0.7"
+  required_version = ">= 1.0.3"
 
   required_providers {
     kubernetes = {

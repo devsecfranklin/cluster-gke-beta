@@ -42,3 +42,9 @@ variable "node_machine_type" {
   type        = string
   default     = "n1-standard-4"
 }
+
+variable "service_account_terraform" {
+  description = "https://tfsec.dev/docs/google/GCP012/"
+  type        = string
+  default     = "fdiaz-gke-bot@gcp-gcs-pso.iam.gserviceaccount.com"
+}
