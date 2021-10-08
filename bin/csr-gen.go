@@ -1,6 +1,6 @@
 package main
 
-import {
+import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -8,7 +8,7 @@ import {
 	"encoding/asn1"
 	"encoding/pem"
 	"os"
-}
+)
 
 func main() {
 	name := os.Args[1]
@@ -57,7 +57,7 @@ func main() {
 		SignatureAlgorithm: x509.SHA256WithRSA,
 	}
 
-	bytes, err := x509.CreateCertificateRequest(rand.Reader)
+	bytes, err := x509.CreateCertificateRequest(rand.Reader, &csr, key)
 	if err != nil {
 		panic(err)
 	}

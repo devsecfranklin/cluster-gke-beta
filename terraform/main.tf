@@ -45,15 +45,13 @@ resource "google_compute_subnetwork" "gke-subnet" {
   */
   secondary_ip_range = [
     {
-      ip_cidr_range = "10.171.0.0/16"
-      range_name    = "dev-sec-gke-pods"
+      ip_cidr_range = "10.188.0.0/16"
+      range_name    = "gke-secure-dev-lab-pods-7d18c33d"
     },
     {
-      ip_cidr_range = "10.172.0.0/22"
-      range_name    = "dev-sec-gke-services"
+      ip_cidr_range = "10.189.0.0/22"
+      range_name    = "gke-secure-dev-lab-services-7d18c33d"
     },
-
-
   ]
 }
 
@@ -111,7 +109,10 @@ resource "google_container_cluster" "dev_cluster" {
       cidr_block   = "34.134.31.136/32"
       display_name = "panorama-three"
     }
-
+    cidr_blocks {
+      cidr_block = "50.211.230.249/32"
+      display_name = "ds-office-franklin"
+    }
     cidr_blocks {
       cidr_block   = "75.70.99.60/32"
       display_name = "franklin-denver"
