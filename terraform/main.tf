@@ -218,12 +218,11 @@ resource "google_container_node_pool" "dev_nodes" {
 }
 
 module "tekton" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton"
+  source = "github.com/devsecfranklin/module-tekton"
 
-  cluster_type               = "kubernetes"
-  cluster_config_file_path   = "."
-  cluster_ingress_hostname   = "ingress-tkn"
-  tools_namespace            = var.tekton_namespace
-  tekton_dashboard_namespace = var.tekton_namespace
+  name = var.name // pass name of cluster to module
 
+  depends_on = [
+    google_container_node_pool.dev_nodes
+  ]
 }
