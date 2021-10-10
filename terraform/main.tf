@@ -110,7 +110,7 @@ resource "google_container_cluster" "dev_cluster" {
       display_name = "panorama-three"
     }
     cidr_blocks {
-      cidr_block = "50.211.230.249/32"
+      cidr_block   = "50.211.230.249/32"
       display_name = "ds-office-franklin"
     }
     cidr_blocks {
@@ -215,4 +215,15 @@ resource "google_container_node_pool" "dev_nodes" {
     auto_repair  = true
     auto_upgrade = true
   }
+}
+
+module "tekton" {
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton"
+
+  cluster_type               = "kubernetes"
+  cluster_config_file_path   = "."
+  cluster_ingress_hostname   = "ingress-tkn"
+  tools_namespace            = var.tekton_namespace
+  tekton_dashboard_namespace = var.tekton_namespace
+
 }

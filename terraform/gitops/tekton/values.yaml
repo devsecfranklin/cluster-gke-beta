@@ -1,0 +1,14 @@
+"global":
+  "clusterType": "kubernetes"
+  "enabled": true
+  "ingressSubdomain": "ingress-tkn"
+"tekton-operator":
+  "app": "tekton"
+  "clusterType": "kubernetes"
+  "ocpCatalog":
+    "channel": "stable"
+  "olmNamespace": ""
+  "operatorNamespace": ""
+"tool-config":
+  "applicationMenu": false
+  "url": ""
