@@ -48,9 +48,3 @@ variable "service_account_terraform" {
   type        = string
   default     = "fdiaz-gke-bot@gcp-gcs-pso.iam.gserviceaccount.com"
 }
-
-variable "tekton_namespace" {
-  description = "The namespace to be used by Tekton"
-  type        = string
-  default     = "tekton-pipelines"
-}
