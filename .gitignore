@@ -1,3 +1,5 @@
+charts/
+.tmp
 _build
 .DS_Store
 *.code-workspace

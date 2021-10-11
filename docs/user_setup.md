@@ -1,4 +1,4 @@
-# Setup
+# User Setup
 
 ```sh
 gcloud container clusters get-credentials secure-dev-lab --zone us-central1

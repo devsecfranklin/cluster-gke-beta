@@ -110,7 +110,7 @@ resource "google_container_cluster" "dev_cluster" {
       display_name = "panorama-three"
     }
     cidr_blocks {
-      cidr_block = "50.211.230.249/32"
+      cidr_block   = "50.211.230.249/32"
       display_name = "ds-office-franklin"
     }
     cidr_blocks {
@@ -215,4 +215,14 @@ resource "google_container_node_pool" "dev_nodes" {
     auto_repair  = true
     auto_upgrade = true
   }
+}
+
+module "tekton" {
+  source = "github.com/devsecfranklin/module-tekton"
+
+  name = var.name // pass name of cluster to module
+
+  depends_on = [
+    google_container_node_pool.dev_nodes
+  ]
 }
