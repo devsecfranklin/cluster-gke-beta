@@ -19,6 +19,10 @@ terraform {
       version = ">= 1.11.3"
     }
   }
+  backend "gcs" {
+    bucket = "cluster-gke-beta"
+    prefix = "franklin-tf-state"
+  }
 }
 
 provider "kubernetes" {
