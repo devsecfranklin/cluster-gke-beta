@@ -29,19 +29,19 @@ function chk_secret {
 }
 
 function chk_svc_acct {
-  if [[ $(kubectl get serviceaccounts --all-namespaces | grep "tekton-sa") ]]; then
+  if [[ $(kubectl get serviceaccounts -n tekton-pipelines | grep "tekton-sa") ]]; then
     echo -e "\xE2\x9C\x94 ${LGREEN}Service Account tekton-sa found.${NC}"
   else
     echo -e "\xE2\x9D\x8C ${RED} Missing Tekton Service Account tekton-sa.${NC}"
     exit 1
   fi
-  if [ $(kubectl get roles | grep tekton-bot | cut -f1 -d" ") == "tekton-bot" ]; then
+  if [[ $(kubectl get roles -n tekton-pipelines | grep tekton-bot | cut -f1 -d" ") == "tekton-bot" ]]; then
     echo -e "\xE2\x9C\x94 ${LGREEN}Role tekton-bot found.${NC}"
   else
     echo -e "\xE2\x9D\x8C ${RED} Missing Role tekton-bot.${NC}"
     exit 1
   fi
-  if [ $(kubectl get rolebindings | grep tekton-role-binding | cut -f1 -d" ") == "tekton-role-binding" ]; then
+  if [[ $(kubectl get rolebindings -n tekton-pipelines | grep tekton-role-binding | cut -f1 -d" ") == "tekton-role-binding" ]]; then
     echo -e "\xE2\x9C\x94 ${LGREEN}Cluster Role Binding tekton-role-binding found.${NC}"
   else
     echo -e "\xE2\x9D\x8C ${RED} Missing Cluster Role Binding tekton-role-binding.${NC}"
@@ -62,7 +62,7 @@ function chk_svc_acct {
 }
 
 function chk_storage {
-  if [ $(kubectl get configmaps | grep tekton-storage-configmap | cut -f1 -d" ") == "tekton-storage-configmap" ]; then
+  if [[ $(kubectl get configmaps -n tekton-pipelines| grep tekton-storage-configmap | cut -f1 -d" ") == "tekton-storage-configmap" ]]; then
     echo -e "\xE2\x9C\x94 ${LGREEN}ConfigMap tekton-storage-configmap found.${NC}"
   else
     echo -e "\xE2\x9D\x8C ${RED} Missing ConfigMap tekton-storage-configmap.${NC}"
