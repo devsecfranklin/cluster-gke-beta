@@ -29,7 +29,7 @@ function chk_secret {
 }
 
 function chk_svc_acct {
-  if [[ $(kubectl get serviceaccounts --all-namespaces | grep "tekton-sa" | cut -f1 -d" ") == "tekton-sa" ]]; then
+  if [[ $(kubectl get serviceaccounts --all-namespaces | grep "tekton-sa") ]]; then
     echo -e "\xE2\x9C\x94 ${LGREEN}Service Account tekton-sa found.${NC}"
   else
     echo -e "\xE2\x9D\x8C ${RED} Missing Tekton Service Account tekton-sa.${NC}"

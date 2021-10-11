@@ -5,6 +5,14 @@ data "google_container_engine_versions" "gke_version" {
   location = var.zone
 }
 
+resource "google_storage_bucket" "cluster-gke-beta" {
+  project = var.project_id
+  name    = "cluster-gke-beta"
+
+  force_destroy               = true
+  uniform_bucket_level_access = true
+}
+
 resource "google_compute_network" "vpc" {
   name                    = "${var.name}-vpc"
   project                 = var.project_id
