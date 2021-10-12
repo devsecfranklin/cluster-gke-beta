@@ -5,13 +5,14 @@ data "google_container_engine_versions" "gke_version" {
   location = var.zone
 }
 
+/* Create te bucket manually
 resource "google_storage_bucket" "cluster-gke-beta" {
   project = var.project_id
   name    = "cluster-gke-beta"
 
   force_destroy               = true
   uniform_bucket_level_access = true
-}
+}*/
 
 resource "google_compute_network" "vpc" {
   name                    = "${var.name}-vpc"
@@ -225,12 +226,5 @@ resource "google_container_node_pool" "dev_nodes" {
   }
 }
 
-module "tekton" {
-  source = "github.com/devsecfranklin/module-tekton"
 
-  name = var.name // pass name of cluster to module
 
-  depends_on = [
-    google_container_node_pool.dev_nodes
-  ]
-}
