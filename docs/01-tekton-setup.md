@@ -22,12 +22,24 @@ bin/create_secret.sh
 ## Install Tekton
 
 ```sh
+kubectl config set-context --current --namespace=tekton-pipelines
 kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
 kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
 kubectl get namespace tekton-pipelines
 # you can wait to see it RUNNING
 watch kubectl get pods -n tekton-pipelines
+```
+
+* Delete the webhook configurations if you see an error like so:
+`Error from server (InternalError): error when creating "./pipeline-test.yml": Internal error occurred: failed calling webhook "webhook.pipeline.tekton.dev":`
+
+```sh
+kubectl get mutatingwebhookconfigurations | grep tekton
+kubectl get validatingwebhookconfigurations | grep tekton
+kubectl delete mutatingwebhookconfigurations webhook.pipeline.tekton.dev
+kubectl delete validatingwebhookconfigurations config.webhook.pipeline.tekton.dev
+kubectl delete validatingwebhookconfigurations validation.webhook.pipeline.tekton.dev
 ```
 
 ## GCP Firewall
