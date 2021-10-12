@@ -31,7 +31,7 @@ resource "google_compute_firewall" "allow-tekton-webhook" {
 }
 
 module "tekton" {
-  source = "github.com/devsecfranklin/module-tekton"
+  source = "github.com/devsecfranklin/terraform-kubernetes-tekton"
 
   name = var.name // pass name of cluster to module
 
