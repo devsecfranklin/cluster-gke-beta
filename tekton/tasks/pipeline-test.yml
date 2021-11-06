@@ -19,7 +19,7 @@ spec:
       description: Inform pipeline of examples test
   steps:
     - name: hygeine-checks
-      image: golang:1.17.2-alpine3.13
+      image: golang:1.17.3-alpine3.13
       workingDir: /workspace/source
       script: |
         #!/usr/bin/env ash
