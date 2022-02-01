@@ -97,8 +97,8 @@ resource "google_container_cluster" "dev_cluster" {
   }
 
   master_auth {
-    username = var.gke_username
-    password = var.gke_password
+    #username = var.gke_username
+    #password = var.gke_password
 
     client_certificate_config {
       issue_client_certificate = false
