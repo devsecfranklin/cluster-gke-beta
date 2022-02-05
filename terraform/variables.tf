@@ -48,3 +48,5 @@ variable "service_account_terraform" {
   type        = string
   default     = "fdiaz-gke-bot@gcp-gcs-pso.iam.gserviceaccount.com"
 }
+
+variable "namespace" {}
